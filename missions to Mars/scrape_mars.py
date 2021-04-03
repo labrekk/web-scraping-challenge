@@ -64,3 +64,47 @@ def scrape():
     astro_url = baseurl + '/search/results?q=hemisphere+enhanced&k1=target&v1=Mars'
 
     browser.visit(astro_url)
+
+    html = browser.html
+    astro_soup = bs(html, 'html.parser')
+
+    hemisphere_image_urls = []
+
+    #loop results for urls
+    hemi_items = soup.find_all('div', class_='item')
+
+    for i in hemi_items:
+        title = i.find('h3').text.strip()
+        description = i.find('div', class_='description')
+        i_url = i.find('a')['href']
+        
+        new_img = baseurl + i_url
+
+        browser.visit(new_img)
+        html = browser.html
+        soup = bs(html, 'html.parser')
+
+        astro_img = soup.find('img', class_='wide-image')['src']
+
+        # Combine base url with image url
+        astro_img_url = (baseurl + astro_img)
+
+        astro_dict = {
+            'title': title,
+            'astro_img_url': astro_img_url,
+        }
+
+        # Append to list
+        hemisphere_image_urls.append(hemi_dict)
+
+    mars_dict = {
+        'title': article_title,
+        'text': article_text,
+        'featured_img': jpl_image_url,
+        'facts': mars_facts_html,
+        'hemipshere_img_urls': hemisphere_image_urls
+    }
+
+    browser.quit()
+
+    return mars_dict

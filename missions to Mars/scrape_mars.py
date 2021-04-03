@@ -7,3 +7,14 @@ import pandas as pd
 import os
 import time
 import pymongo
+
+def init_browser():
+    executable_path = {'executable_path': ChromeDriverManager().install()}
+    return Browser('chrome', **executable_path, headless=False)
+
+def scrape():
+    browser = init_browser()
+    mars_dict = {}
+
+    url = 'https://mars.nasa.gov/news/'
+    

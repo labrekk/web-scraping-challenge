@@ -61,4 +61,6 @@ def scrape():
 #usgs site 
 
     baseurl = 'https://astrogeology.usgs.gov'
-    astro_url = baseurl + 
+    astro_url = baseurl + '/search/results?q=hemisphere+enhanced&k1=target&v1=Mars'
+
+    browser.visit(astro_url)

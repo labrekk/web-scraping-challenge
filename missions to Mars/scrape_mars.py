@@ -33,5 +33,32 @@ def scrape():
     #append to dict
     mars_dict['article_title'] = article_title
     mars_dict['article_text'] = article_text
+#--------------------------
+    #begin scrape for jpl images website
+    jpl_url = 'https://data-class-jpl-space.s3.amazonaws.com/JPL_Space/index.html'
+    browser.visit(jpl_url)
+    html = browser.html
+    jpl_soup = bs(html, 'html.parser')
 
-    
+    #Go to featured images
+    browser.links.find_by_partial_text('FULL IMAGE').click()
+    image = jpl_soup.find('img', class_='headerimage fade-in')
+    jpl_image = image['src']
+
+    jpl_image_url = jpl_url + jpl_image
+#--------------------------------
+    facts_url="https://space-facts.com/mars/"
+    tables = pd.read_html(facts_url)
+    #rename columns and index table
+    tables[0].columns = ['Description', 'Mars']
+    tables[0].set_index('Description', inplace=True)
+    #Back to Html
+    mars_facts_html = tables[0].to_html()
+    mars_facts_html.replace('\n', '')
+
+#--------------------------------
+
+#usgs site 
+
+    baseurl = 'https://astrogeology.usgs.gov'
+    astro_url = baseurl + 
